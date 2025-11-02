@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nebula Games – Đăng nhập / Đăng ký</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <h1>🌌 Nebula Games</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showForm('login')">Đăng nhập</button>
+      <button class="tab" onclick="showForm('register')">Đăng ký</button>
+    </div>
+
+    <!-- FORM ĐĂNG NHẬP -->
+    <form id="login" class="auth-form">
+      <h2>Đăng nhập</h2>
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Mật khẩu" required />
+      <button type="submit">Đăng nhập</button>
+      <p class="note">Chưa có tài khoản? 
+        <span onclick="showForm('register')">Đăng ký ngay</span>
+      </p>
+    </form>
+
+    <!-- FORM ĐĂNG KÝ -->
+    <form id="register" class="auth-form" style="display:none;">
+      <h2>Đăng ký</h2>
+      <input type="text" placeholder="Tên hiển thị" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Mật khẩu" required />
+      <input type="password" placeholder="Xác nhận mật khẩu" required />
+      <button type="submit">Đăng ký</button>
+      <p class="note">Đã có tài khoản? 
+        <span onclick="showForm('login')">Đăng nhập ngay</span>
+      </p>
+    </form>
+  </div>
+
+  <!-- Tabs toggle script -->
+  <script>
+    function showForm(form) {
+      document.getElementById("login").style.display = (form === "login") ? "block" : "none";
+      document.getElementById("register").style.display = (form === "register") ? "block" : "none";
+
+      const tabs = document.querySelectorAll(".tab");
+      tabs.forEach(tab => tab.classList.remove("active"));
+      if (form === "login") tabs[0].classList.add("active");
+      else tabs[1].classList.add("active");
+    }
+  </script>
+
+<script type="module" src="../js/firebase-config.js"></script>
+<script type="module" src="../js/login.js"></script>
+<script type="module" src="../js/register.js"></script>
+
+</body>
+</html>

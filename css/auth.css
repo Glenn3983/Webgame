@@ -1,0 +1,118 @@
+:root {
+  --bg: #0b1220;
+  --panel: #0f172a;
+  --line: #1f2a44;
+  --text: #e6f1ff;
+  --muted: #a5b4cf;
+  --pri: #00e5ff;   /* neon blue */
+  --acc: #8b5cf6;   /* neon purple */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(1000px 600px at 10% 0%, rgba(56,189,248,.12), transparent 70%),
+              radial-gradient(1000px 600px at 90% 100%, rgba(139,92,246,.12), transparent 70%),
+              var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.auth-container {
+  background: var(--panel);
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+  width: 380px;
+  text-align: center;
+}
+
+.auth-container h1 {
+  margin-bottom: 20px;
+  color: var(--pri);
+  text-shadow: 0 0 10px var(--pri);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.tab.active {
+  background: linear-gradient(90deg, var(--pri), var(--acc));
+  color: #0a192f;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+.auth-form h2 {
+  margin-bottom: 20px;
+  color: var(--pri);
+  text-shadow: 0 0 8px var(--pri);
+}
+.auth-form input {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--pri);
+  box-shadow: 0 0 10px var(--acc);
+}
+
+/* Button */
+.auth-form button {
+  background: linear-gradient(45deg, var(--pri), var(--acc));
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  color: #0a192f;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.auth-form button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(139,92,246,0.6);
+}
+
+/* Note */
+.note {
+  margin-top: 15px;
+  font-size: 14px;
+}
+.note span {
+  color: var(--acc);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+.note span:hover {
+  color: var(--pri);
+}

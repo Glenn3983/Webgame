@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chỉnh sửa tài khoản</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/profile.css" />
+</head>
+<body>
+  <div class="profile-container">
+    <h1>⚙️ Quản lý tài khoản</h1>
+
+    <!-- Avatar -->
+    <div class="avatar-preview">
+      <img id="avatar-img" src="https://i.ibb.co/ZYW3VTp/brown-brim.png" alt="Avatar">
+      <label for="avatarFile" class="btn-outline">Chọn ảnh mới</label>
+      <input type="file" id="avatarFile" accept="image/*" style="display:none;" />
+    </div>
+
+    <!-- Form -->
+    <form id="profile-form">
+      <label for="displayName">Tên hiển thị</label>
+      <input type="text" id="displayName" placeholder="Tên hiển thị" />
+
+      <!-- Nhóm đổi mật khẩu (ẩn mặc định) -->
+      <div id="password-section" style="display:none;">
+        <label for="oldPassword">Mật khẩu hiện tại</label>
+        <input type="password" id="oldPassword" placeholder="Nhập mật khẩu hiện tại" />
+
+        <label for="newPassword">Mật khẩu mới</label>
+        <input type="password" id="newPassword" placeholder="Mật khẩu mới" />
+      </div>
+
+      <button type="submit" class="btn-primary">Cập nhật</button>
+      <button type="button" id="toggle-password" class="btn-outline">Đổi mật khẩu</button>
+    </form>
+
+    <button id="logout-btn" class="btn-outline">Đăng xuất</button>
+  </div>
+
+  <!-- Firebase + Script -->
+  <script type="module" src="../js/firebase-config.js"></script>
+  <script type="module" src="../js/profile.js"></script>
+</body>
+</html>

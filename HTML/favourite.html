@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nebula Games — Yêu thích</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">Nebula<span>Games</span></div>
+
+    <form class="searchbar">
+      <input type="text" placeholder="Tìm game yêu thích..." id="favSearch" />
+      <button type="submit">Tìm</button>
+    </form>
+
+    <nav class="nav">
+      <a href="index.html">Cửa hàng</a>
+      <a href="favourite.html" class="active">Yêu thích</a>
+      <a href="profile.html">Hồ sơ</a>
+    </nav>
+    <div class="actions">
+        <button id="addToCart">🛒 Thêm vào giỏ hàng</button>
+        <button id="favBtn">❤️ Lưu vào Yêu thích</button>
+    </div>
+
+
+    <div id="user-menu" class="user-box">
+      <img src="https://i.ibb.co/ZYW3VTp/brown-brim.png" alt="Avatar" class="avatar-small" />
+      <div id="user-menu"></div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>🎮 Danh sách Yêu thích</h1>
+      <p>Những tựa game bạn đã đánh dấu là yêu thích sẽ hiển thị tại đây. Hãy lưu trữ những game bạn muốn sở hữu hoặc chơi lại.</p>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="main-container">
+    <div class="game-area">
+      <div class="section-head">
+        <h2>Game của bạn</h2>
+      </div>
+
+      <div id="favouriteList" class="game-grid">
+        <!-- Các game yêu thích sẽ được render tại đây -->
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 Nebula Games — Yêu thích
+  </footer>
+
+  <script type="module" src="../js/firebase-config.js"></script>
+  <script type="module">
+    // // Tải danh sách game yêu thích (demo)
+    // const favList = document.getElementById("favouriteList");
+    // const favGames = JSON.parse(localStorage.getItem("favourites") || "[]");
+
+    // if (favGames.length === 0) {
+    //   favList.innerHTML = `<p style="text-align:center;color:#a5b4cf;">Bạn chưa thêm game nào vào danh sách yêu thích.</p>`;
+    // } else {
+    //   favGames.forEach(g => {
+    //     const card = document.createElement("div");
+    //     const id = docSnap.id;
+    //     card.className = "game-card";
+    //     card.innerHTML = `
+    //       <img src="${g.image}" alt="${g.name}">
+    //       <h3>${g.name}</h3>
+    //       <p class="meta">${(g.price || 0).toLocaleString()} ₫</p>
+    //     `;
+    //     card.addEventListener("click", () => {
+    //       localStorage.setItem("selectedGameId", id);
+    //       window.location.href = "game.html";
+    //   });
+    //     favList.appendChild(card);
+    //   });
+    // }
+
+    // // Tìm kiếm trong danh sách yêu thích
+    // document.querySelector(".searchbar").addEventListener("submit", (e) => {
+    //   e.preventDefault();
+    //   const keyword = document.getElementById("favSearch").value.trim().toLowerCase();
+    //   const cards = favList.querySelectorAll(".game-card");
+    //   let count = 0;
+    //   cards.forEach(card => {
+    //     const name = card.querySelector("h3").textContent.toLowerCase();
+    //     card.style.display = name.includes(keyword) ? "" : "none";
+    //     if (name.includes(keyword)) count++;
+    //   });
+    //   if (count === 0)
+    //     favList.innerHTML = `<p style="text-align:center;color:#a5b4cf;">Không tìm thấy kết quả phù hợp.</p>`;
+    // });
+    // Import Firebase modules
+  import { auth, db } from "../js/firebase-config.js";
+  import {
+    collection,
+    getDocs,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+  const favList = document.getElementById("favouriteList");
+
+  // ====== Đăng nhập và tải danh sách Yêu thích từ Firestore ======
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      favList.innerHTML = `<p style="text-align:center;color:#a5b4cf;">Vui lòng đăng nhập để xem danh sách yêu thích.</p>`;
+      return;
+    }
+
+    try {
+      // Lấy danh sách yêu thích của user (users/{uid}/favourites)
+      const favSnap = await getDocs(collection(db, "users", user.uid, "favourites"));
+      if (favSnap.empty) {
+        favList.innerHTML = `<p style="text-align:center;color:#a5b4cf;">Bạn chưa thêm game nào vào danh sách yêu thích.</p>`;
+        return;
+      }
+
+      // Duyệt từng game yêu thích, lấy thông tin chi tiết từ collection "games"
+      favList.innerHTML = "";
+      for (const docSnap of favSnap.docs) {
+        const favData = docSnap.data(); // chứa id game
+        const gameId = favData.id;
+
+        // Lấy thông tin chi tiết của game từ Firestore
+        const gameRef = doc(db, "games", gameId);
+        const gameSnap = await getDoc(gameRef);
+
+        if (!gameSnap.exists()) continue;
+        const g = gameSnap.data();
+
+        // Tạo card hiển thị
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.innerHTML = `
+          <img src="${g.image || "https://via.placeholder.com/300x180"}" alt="${g.name}">
+          <h3>${g.name}</h3>
+          <p class="meta">${(g.price || 0).toLocaleString()} ₫</p>
+        `;
+
+        // Khi click vào card → lưu ID và chuyển sang game.html
+        card.addEventListener("click", () => {
+          localStorage.setItem("selectedGameId", gameId);
+          window.location.href = "game.html";
+        });
+
+        favList.appendChild(card);
+      }
+    } catch (error) {
+      console.error("Lỗi tải danh sách yêu thích:", error);
+      favList.innerHTML = `<p style="text-align:center;color:#ff6b6b;">Không thể tải danh sách yêu thích. (${error.message})</p>`;
+    }
+  });
+
+  // ====== Tìm kiếm trong danh sách yêu thích ======
+  document.querySelector(".searchbar").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const keyword = document.getElementById("favSearch").value.trim().toLowerCase();
+    const cards = favList.querySelectorAll(".game-card");
+    let count = 0;
+    cards.forEach(card => {
+      const name = card.querySelector("h3").textContent.toLowerCase();
+      card.style.display = name.includes(keyword) ? "" : "none";
+      if (name.includes(keyword)) count++;
+    });
+    if (count === 0)
+      favList.innerHTML = `<p style="text-align:center;color:#a5b4cf;">Không tìm thấy kết quả phù hợp.</p>`;
+  });
+  </script>
+
+    
+    <!-- <script type="module" src="../js/guest.js"></script> -->
+    <!-- <script type="module" src="../js/order.js"></script> -->
+</body>
+</html>

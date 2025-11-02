@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết game</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .game-detail {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .game-info-box {
+      background: #1a1f3c;
+      border: 1px solid #00bfff;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 700px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .game-info-box img {
+      width: 100%;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .price-box {
+      margin: 1rem 0;
+      font-size: 18px;
+    }
+
+    .price-old {
+      text-decoration: line-through;
+      margin-left: 10px;
+      color: #999;
+    }
+
+    .actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 15px;
+    }
+
+    .actions button {
+      background: #00bfff;
+      border: none;
+      color: #0b1026;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      flex: 1;
+    }
+    .actions button:hover {
+      background: #008ecc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Nebula Games</h1>
+    <a href="index.html">🏠 Trang chủ</a>
+  </header>
+
+  <main>
+    <div id="gameDetail">Đang tải thông tin game...</div>
+  </main>
+
+  <script type="module" src="../js/game.js"></script>
+</body>
+
+</html>
